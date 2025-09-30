@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   useAccount,
   useConnect,
@@ -19,6 +19,11 @@ export function LoginCard() {
   const { disconnect } = useDisconnect();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const login = useCallback(async () => {
     setError(null);
@@ -102,6 +107,8 @@ export function LoginCard() {
       // ignore
     }
   }, [connect, connectors, disconnect]);
+
+  if (!mounted) return null;
 
   return (
     <div
